@@ -49,21 +49,37 @@ class CarouselLinkedinMaker():
         list_of_pfds = [f for f in glob.glob(self.input_folder + "/*.pdf")]
         list_of_pfds.sort()
         print(list_of_pfds)
-        self.group_by_name(list_of_pfds)
+        list_file_names = self.group_by_name(list_of_pfds)
         merger = PdfMerger()
-
-        for pdf in list_of_pfds:
-            merger.append(pdf)
+        for element in list_file_names:
+            for group in element:
+                merger.append(group)
 
         merger.write(self.output_folder + "/result.pdf")
         merger.close()
+
     def group_by_name(self, list_of_pdfs):
-        # A list comprehension. It is a way to create a list from another list.
-        list_splitted = [element.lower().replace('/', ' ').replace('.', ' ').split() for element in list_of_pdfs]
+        """Get unique file names from the list to group by"""
+        list_splitted = [element.lower().replace(' ', '').replace('/', ' ').replace('.', ' ').split() for element in list_of_pdfs]
         print(list_splitted)
         file_name_set = set()
         for pdf in list_splitted:
             file_name = ''.join((x for x in pdf[1] if not x.isdigit()))
             file_name_set.add(file_name)
+        print(file_name_set)
+        list_of_files = [[]]
+        for file_name in file_name_set:
+            index = 0
+            print(file_name)
+            for pdf in list_of_pdfs:
+                print(pdf)
+                index_pdfs = 0
+                if pdf[1] == file_name :
+                    list_of_files[index].append(list_of_pdfs[index_pdfs])
+                index_pdfs += 1
+        
+        print(list_of_files)
+        return list_of_files
+    
 if __name__ == "__main__":
     CarouselLinkedinMaker()

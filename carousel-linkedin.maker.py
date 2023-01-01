@@ -7,6 +7,7 @@ CONFIG_FILE_NAME = "config-carousel-linkedin-maker.json"
 ORIGIN_FOLDER_FIELD = "origin_folder"
 FINAL_FOLDER_FIELD = "final_folder"
 
+
 class CarouselLinkedinMaker():
     """# Automatization of merging PDF's from a input folder"""
     config_file_data = ""
@@ -27,11 +28,13 @@ class CarouselLinkedinMaker():
 
     def check_folder_input(self):
         """# Checking existence of input folder and/or create"""
-        self.input_folder = self.check_folfer(self.config_file_data[ORIGIN_FOLDER_FIELD])
+        self.input_folder = self.check_folfer(
+            self.config_file_data[ORIGIN_FOLDER_FIELD])
 
     def check_folder_output(self):
         """# Checking existence of output folder and/or create"""
-        self.output_folder =  self.check_folfer(self.config_file_data[FINAL_FOLDER_FIELD])
+        self.output_folder = self.check_folfer(
+            self.config_file_data[FINAL_FOLDER_FIELD])
 
     def check_folfer(self, folder_name):
         """# Checking existence fo given folder and/or create"""
@@ -60,26 +63,29 @@ class CarouselLinkedinMaker():
 
     def group_by_name(self, list_of_pdfs):
         """Get unique file names from the list to group by"""
-        list_splitted = [element.lower().replace(' ', '').replace('/', ' ').replace('.', ' ').split() for element in list_of_pdfs]
-        print(list_splitted)
+        list_splitted = [element.lower()
+                                .replace(' ', '')
+                                .replace('/', ' ')
+                                .replace('.', ' ')
+                                .split() for element in list_of_pdfs]
+
         file_name_set = set()
         for pdf in list_splitted:
             file_name = ''.join((x for x in pdf[1] if not x.isdigit()))
             file_name_set.add(file_name)
-        print(file_name_set)
+
         list_of_files = [[]]
         for file_name in file_name_set:
             index = 0
-            print(file_name)
             for pdf in list_of_pdfs:
-                print(pdf)
                 index_pdfs = 0
-                if pdf[1] == file_name :
+                if pdf[1].find(file_name):
                     list_of_files[index].append(list_of_pdfs[index_pdfs])
-                index_pdfs += 1
-        
+                index_pdfs = index_pdfs + 1
+            index = index + 1
         print(list_of_files)
         return list_of_files
-    
+
+
 if __name__ == "__main__":
     CarouselLinkedinMaker()

@@ -1,7 +1,7 @@
-from PyPDF2 import PdfMerger
 import glob
 import json
 import os
+from PyPDF2 import PdfMerger
 
 CONFIG_FILE_NAME = "config-carousel-linkedin-maker.json"
 ORIGIN_FOLDER_FIELD = "origin_folder"
@@ -54,5 +54,6 @@ class CarouselLinkedinMaker():
 
         merger.write(self.output_folder + "/result.pdf")
         merger.close()
+
 if __name__ == "__main__":
     CarouselLinkedinMaker()
